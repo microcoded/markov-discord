@@ -175,17 +175,17 @@ export class AppConfig {
   @IsNumber()
   randomReplyChance = process.env.RANDOM_REPLY_CHANCE
     ? Math.min(1, Math.max(0, parseFloat(process.env.RANDOM_REPLY_CHANCE)))
-    : 0.10;
+    : 0.1;
 
   /**
    * Probability (0.0 to 1.0) of generating a random reply when the bot is mentioned
    * @example 0.8
-   * @default 0.45
+   * @default 0.40
    * @env RANDOM_REPLY_MENTION_CHANCE
    */
   @IsOptional()
   @IsNumber()
   randomReplyMentionChance = process.env.RANDOM_REPLY_MENTION_CHANCE
     ? Math.min(1, Math.max(0, parseFloat(process.env.RANDOM_REPLY_MENTION_CHANCE)))
-    : 0.45;
+    : 0.4;
 }
