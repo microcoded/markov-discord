@@ -26,6 +26,15 @@ import {
   trainCommand,
 } from './deploy-commands';
 import { getRandomElement, getVersion, packageJson } from './util';
+
+/**
+ * Check if a probability chance should occur
+ * @param chance Probability between 0 and 1
+ * @return true if the chance occurred
+ */
+function shouldRandomReply(chance: number): boolean {
+  return Math.random() < chance;
+}
 import ormconfig from './ormconfig';
 
 interface MarkovDataCustom {
@@ -802,11 +811,21 @@ client.on('messageCreate', async (message) => {
   if (command === null) {
     if (isHumanAuthoredMessage(message)) {
       if (client.user && message.mentions.has(client.user)) {
-        L.debug('Responding to mention');
-        // <@!278354154563567636> how are you doing?
-        const startSeed = message.content.replace(/<@!\d+>/g, '').trim();
-        const generatedResponse = await generateResponse(message, { startSeed });
-        await handleResponseMessage(generatedResponse, message);
+        L.debug('Bot mentioned');
+        if (shouldRandomReply(config.randomReplyMentionChance)) {
+          L.debug('Responding to mention');
+          // <@!278354154563567636> how are you doing?
+          const startSeed = message.content.replace(/<@!\d+>/g, '').trim();
+          const generatedResponse = await generateResponse(message, { startSeed });
+          await handleResponseMessage(generatedResponse, message);
+        }
+      } else if (await isValidChannel(message.channel)) {
+        L.debug('Listening to channel');
+        if (shouldRandomReply(config.randomReplyChance)) {
+          L.debug('Randomly responding to message');
+          const generatedResponse = await generateResponse(message);
+          await handleResponseMessage(generatedResponse, message);
+        }
       }
 
       if (await isValidChannel(message.channel)) {
