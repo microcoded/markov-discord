@@ -168,24 +168,24 @@ export class AppConfig {
   /**
    * Probability (0.0 to 1.0) of generating a random reply after a normal message in listened channels
    * @example 0.05
-   * @default 0.10
+   * @default 0.25
    * @env RANDOM_REPLY_CHANCE
    */
   @IsOptional()
   @IsNumber()
   randomReplyChance = process.env.RANDOM_REPLY_CHANCE
     ? Math.min(1, Math.max(0, parseFloat(process.env.RANDOM_REPLY_CHANCE)))
-    : 0.1;
+    : 0.25;
 
   /**
    * Probability (0.0 to 1.0) of generating a random reply when the bot is mentioned
-   * @example 0.8
-   * @default 0.40
+   * @example 0.80
+   * @default 0.5
    * @env RANDOM_REPLY_MENTION_CHANCE
    */
   @IsOptional()
   @IsNumber()
   randomReplyMentionChance = process.env.RANDOM_REPLY_MENTION_CHANCE
     ? Math.min(1, Math.max(0, parseFloat(process.env.RANDOM_REPLY_MENTION_CHANCE)))
-    : 0.4;
+    : 0.5;
 }
