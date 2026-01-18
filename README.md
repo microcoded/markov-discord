@@ -42,7 +42,7 @@ This bot stores your Discord server's entire message history, so a public instan
 1. Download this repository using git in a terminal window
 
     ```cmd
-    git clone https://github.com/claabs/markov-discord.git
+    git clone https://github.com/microcoded/markov-discord.git
     ```
 1. Open a command prompt in the `markov-discord` folder.
 
