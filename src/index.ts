@@ -727,10 +727,19 @@ function inviteMessage(): AgnosticReplyOptions {
 async function handleResponseMessage(
   generatedResponse: GenerateResponse,
   message: Discord.Message,
+  reply = true,
 ): Promise<void> {
-  if (generatedResponse.message) await message.reply(generatedResponse.message);
-  if (generatedResponse.debug) await message.reply(generatedResponse.debug);
-  if (generatedResponse.error) await message.reply(generatedResponse.error);
+  if (reply) {
+    // Ping the user with a reply-style message
+    if (generatedResponse.message) await message.reply(generatedResponse.message);
+    if (generatedResponse.debug) await message.reply(generatedResponse.debug);
+    if (generatedResponse.error) await message.reply(generatedResponse.error);
+  } else {
+    // Here we send a normal message without pinging the user
+    if (generatedResponse.message) await message.channel.send(generatedResponse.message);
+    if (generatedResponse.debug) await message.channel.send(generatedResponse.debug);
+    if (generatedResponse.error) await message.channel.send(generatedResponse.error);
+  }
 }
 
 async function handleUnprivileged(
@@ -814,17 +823,18 @@ client.on('messageCreate', async (message) => {
         L.debug('Bot mentioned');
         if (shouldRandomReply(config.randomReplyMentionChance)) {
           L.debug('Responding to mention');
-          // <@!278354154563567636> how are you doing?
           const startSeed = message.content.replace(/<@!\d+>/g, '').trim();
           const generatedResponse = await generateResponse(message, { startSeed });
-          await handleResponseMessage(generatedResponse, message);
+          // Directly reply to user's mention
+          await handleResponseMessage(generatedResponse, message, true);
         }
       } else if (await isValidChannel(message.channel)) {
         L.debug('Listening to channel');
         if (shouldRandomReply(config.randomReplyChance)) {
           L.debug('Randomly responding to message');
           const generatedResponse = await generateResponse(message);
-          await handleResponseMessage(generatedResponse, message);
+          // Randomly send a message
+          await handleResponseMessage(generatedResponse, message, false);
         }
       }
 
