@@ -187,5 +187,5 @@ export class AppConfig {
   @IsNumber()
   randomReplyMentionChance = process.env.RANDOM_REPLY_MENTION_CHANCE
     ? Math.min(1, Math.max(0, parseFloat(process.env.RANDOM_REPLY_MENTION_CHANCE)))
-    : 0.5;
+    : 0.045;
 }
