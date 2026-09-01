@@ -8,7 +8,7 @@ Check `/config/config.json`
 Adjust the parameters as desired, e.g.:
 ```json
 "randomReplyChance": 0.25,
-"randomReplyMentionChance": 0.50
+"randomReplyMentionChance": 0.045
 ```
 
 ## Usage
